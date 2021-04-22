@@ -89,6 +89,8 @@ class MainActivity : AppCompatActivity() {
         mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
 
 
+
+
     }
 
     override fun onStart() {
