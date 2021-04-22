@@ -1,36 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/btnSave2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_alignBottom="@id/tvCreateButton"
+        android:layout_toEndOf="@id/tvCreateButton"
+         />
+
+    <Button
+        android:id="@+id/btnBack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/back"
+        android:layout_alignBottom="@id/tvHeader"
+        android:layout_toStartOf="@id/tvHeader"
+         />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/sEdit2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/edit"
+        android:layout_alignBottom="@id/tvHeader"
+        android:layout_toEndOf="@id/tvHeader"
+
+
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/orange"
+        android:clickable="true"
+        android:contentDescription="@string/deleteItem"
+        android:focusable="true"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        android:layout_alignBottom="@id/tvFooter"
+        android:layout_alignEnd="@id/collectionList"
+        android:layout_marginStart="15dp"
+
+        />
+
     <TextView
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Header"
-        android:textSize="30dp"
+        android:text="@string/collection_name"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"/>
+
+    <EditText
+        android:id="@+id/etHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/collection_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+
+        />
+
+
     <Button
         android:id="@+id/tvCreateButton"
         android:onClick="onClickCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp">
+        android:text="@string/create_item"
+        android:layout_marginEnd="10dp"
+        android:layout_alignBottom="@id/floatingActionButton"
+        android:layout_marginStart="15dp"
+        >
+
 
     </Button>
     <ListView
         android:id="@+id/collectionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tvCreateButton"
-        android:layout_above="@id/tvFooter" />
+        android:layout_below="@id/etHeader"
+        android:layout_above="@id/floatingActionButton"
+
+        >
+
+
+    </ListView>
     <TextView
         android:id="@+id/tvFooter"
         android:layout_width="wrap_content"
