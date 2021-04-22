@@ -123,4 +123,6 @@ class MainActivity : AppCompatActivity() {
             return resView
         }
     }
+
+    fun onClickSave(view: View) {}
 }
