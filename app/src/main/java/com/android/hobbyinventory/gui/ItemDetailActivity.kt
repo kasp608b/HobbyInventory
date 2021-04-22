@@ -64,9 +64,13 @@ class ItemDetailActivity : AppCompatActivity() {
             etDescription.visibility = View.GONE
             btnImage.visibility = View.GONE
 
+        } else if (intent.extras == null)
+        {
+            sEdit.isChecked = true
+            onCheckedChange(sEdit.isChecked)
         }
 
-        sEdit.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(view, isChecked)
+        sEdit.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(isChecked)
 
         }
 
@@ -86,7 +90,7 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun onCheckedChange(view: CompoundButton?, checked: Boolean) {
+    private fun onCheckedChange(checked: Boolean) {
         if(checked)
         {
             btnSave.visibility = View.VISIBLE
