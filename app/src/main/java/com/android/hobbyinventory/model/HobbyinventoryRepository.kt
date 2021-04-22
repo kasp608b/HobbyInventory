@@ -25,17 +25,17 @@ class HobbyinventoryRepository private constructor(private val context: Context)
     private val executor = Executors.newSingleThreadExecutor()
 
     //Inserts the given Collection object.
-    fun insert(p: BECollection) {
+    fun insertCollection(p: BECollection) {
         executor.execute{ HobbyinventoryDao.insertCollection(p) }
     }
 
     //Updates the given Collection object.
-    fun update(p: BECollection) {
+    fun updateCollection(p: BECollection) {
         executor.execute { HobbyinventoryDao.updateCollection(p) }
     }
 
     //Deletes the given Collection object.
-    fun delete(p: BECollection) {
+    fun deleteCollection(p: BECollection) {
         executor.execute { HobbyinventoryDao.deleteCollection(p) }
     }
 
@@ -54,17 +54,17 @@ class HobbyinventoryRepository private constructor(private val context: Context)
     fun getItemById(id: Int) = HobbyinventoryDao.getItemById(id)
 
     //Inserts the given Collection object.
-    fun insert(p: BEItem) {
+    fun insertItem(p: BEItem) {
         executor.execute{ HobbyinventoryDao.insertItem(p) }
     }
 
     //Updates the given Collection object.
-    fun update(p: BEItem) {
+    fun updateItem(p: BEItem) {
         executor.execute { HobbyinventoryDao.updateItem(p) }
     }
 
     //Deletes the given Collection object.
-    fun delete(p: BEItem) {
+    fun deleteItem(p: BEItem) {
         executor.execute { HobbyinventoryDao.deleteItem(p) }
     }
 
@@ -76,15 +76,10 @@ class HobbyinventoryRepository private constructor(private val context: Context)
     //...............................................................................................................................
 
     //Get all Collections with items
-    fun getCollectionsWithItems() {
-        executor.execute { HobbyinventoryDao.getCollectionsWithItems() }
-    }
+    fun getCollectionsWithItems() : LiveData<List<CollectionWithItems>> = HobbyinventoryDao.getCollectionsWithItems()
 
     //Get specific collection with items by the given id
-    fun  getCollectionWithItemsById(id: Int){
-        executor.execute{HobbyinventoryDao.getCollectionWithItemsById(id)}
-
-    }
+    fun  getCollectionWithItemsById(id: Int) = HobbyinventoryDao.getCollectionWithItemsById(id)
 
     //Tracks whether or not an instance has been created already.
     companion object {
