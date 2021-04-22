@@ -7,32 +7,26 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
-import com.android.hobbyinventory.R
-import kotlinx.android.synthetic.main.activity_item_detail.*
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
-import android.graphics.Color
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.CompoundButton
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BEItem
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class ItemDetailActivity : AppCompatActivity() {
 
@@ -50,7 +44,7 @@ class ItemDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_item_detail)
         checkPermissions()
 
-        if(intent.extras != null) {
+        if(!sEdit.isChecked && intent.extras != null) {
             val extras: Bundle = intent.extras!!
 
             item = extras.getSerializable("item") as BEItem
@@ -68,13 +62,26 @@ class ItemDetailActivity : AppCompatActivity() {
             btnSave.visibility = View.GONE
             etItemName.visibility = View.GONE
             etDescription.visibility = View.GONE
+            btnImage.visibility = View.GONE
 
         }
 
-        sEdit.setOnCheckedChangeListener{
-            view, isChecked -> onCheckedChange(view, isChecked)
+        sEdit.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(view, isChecked)
 
         }
+
+        etDescription.setOnTouchListener(OnTouchListener { v, event ->
+            if (etDescription.hasFocus()) {
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_SCROLL -> {
+                        v.parent.requestDisallowInterceptTouchEvent(false)
+                        return@OnTouchListener true
+                    }
+                }
+            }
+            false
+        })
 
 
     }
@@ -85,6 +92,8 @@ class ItemDetailActivity : AppCompatActivity() {
             btnSave.visibility = View.VISIBLE
             etItemName.visibility = View.VISIBLE
             etDescription.visibility = View.VISIBLE
+            btnImage.visibility = View.VISIBLE
+
 
             tvDescription.visibility = View.GONE
             tvItemName.visibility = View.GONE
@@ -93,6 +102,7 @@ class ItemDetailActivity : AppCompatActivity() {
             btnSave.visibility = View.GONE
             etItemName.visibility = View.GONE
             etDescription.visibility = View.GONE
+            btnImage.visibility = View.GONE
 
             tvDescription.visibility = View.VISIBLE
             tvItemName.visibility = View.VISIBLE
@@ -118,7 +128,11 @@ class ItemDetailActivity : AppCompatActivity() {
         if ( ! isGranted(Manifest.permission.ACCESS_FINE_LOCATION) ) permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         if ( ! isGranted(Manifest.permission.ACCESS_COARSE_LOCATION) ) permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
         if (permissions.size > 0)
-            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                permissions.toTypedArray(),
+                PERMISSION_REQUEST_CODE
+            )
 
     }
 
@@ -162,7 +176,7 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
     // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
-    private fun showImageFromFile(img: ImageView,  f: File) {
+    private fun showImageFromFile(img: ImageView, f: File) {
         img.setImageURI(Uri.fromFile(f))
         img.setBackgroundColor(Color.RED)
         //mImage.setRotation(90);
@@ -185,9 +199,11 @@ class ItemDetailActivity : AppCompatActivity() {
         val applicationId = "com.android.hobbyinventory"
         intent.putExtra(
             MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(
-            this,
-            "${applicationId}.provider",  //use your app signature + ".provider"
-            mFile!!))
+                this,
+                "${applicationId}.provider",  //use your app signature + ".provider"
+                mFile!!
+            )
+        )
 
         if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE)
@@ -213,8 +229,10 @@ class ItemDetailActivity : AppCompatActivity() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val postfix = "jpg"
         val prefix = "IMG"
-        return File(mediaStorageDir.path +
-                File.separator + prefix +
-                "_" + timeStamp + "." + postfix)
+        return File(
+            mediaStorageDir.path +
+                    File.separator + prefix +
+                    "_" + timeStamp + "." + postfix
+        )
     }
 }
