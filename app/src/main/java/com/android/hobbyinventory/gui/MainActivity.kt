@@ -6,12 +6,17 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
+import com.android.hobbyinventory.model.BEItem
+import com.android.hobbyinventory.model.CollectionWithItems
+import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -28,15 +33,38 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        HobbyinventoryRepository.initialize(this)
+
         refresh()
     }
 
     private fun refresh() {
-        var listofCollections: List<BECollection> = listOf(BECollection(1, "Figures"), BECollection(2, "Manga"))
+        //var listofCollections: List<BECollection> = listOf(BECollection(1, "Figures"), BECollection(2, "Manga"))
+        val mRep = HobbyinventoryRepository.get()
+        /*
+        mRep.insertCollection(BECollection(0, "Figures"))
+        mRep.insertCollection(BECollection(0, "Manga"))
+        */
+       // mRep.insertItem(BEItem(0, 2,"Gyo","",null))
 
-        val asArray = listofCollections.toTypedArray()
-        val adapter: ListAdapter = CollectionsAdapter(this, asArray)
-        collectionList.adapter = adapter
+       // mRep.insertItem(BEItem(0, 1,"smurf","",null))
+
+
+
+
+
+
+        val CollectionObserver = Observer<List<BECollection>>{ c ->
+            collections = c;
+            val asArray = c.toTypedArray()
+            val adapter: ListAdapter = CollectionsAdapter(
+                this,
+                asArray
+            )
+            collectionList.adapter = adapter
+        }
+        mRep.getAllCollection().observe(this, CollectionObserver)
+
 
         collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
     }
@@ -45,6 +73,22 @@ class MainActivity : AppCompatActivity() {
 
     fun onListItemClick(view: View) {
         Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
+        val collection = view.tag as BECollection
+        Log.d("xyz",collection.toString() )
+
+        val mRep = HobbyinventoryRepository.get()
+
+        var items: List<BEItem>? = null
+
+        val ItemsObserver = Observer<CollectionWithItems>{ c ->
+            items = c.items
+
+            Log.d("xyz",items.toString() )
+
+        }
+        mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
+
+
     }
 
     override fun onStart() {
@@ -73,6 +117,8 @@ class MainActivity : AppCompatActivity() {
             val f = collections[position]
             val nameView = resView.findViewById<TextView>(R.id.tvNameExt)
             nameView.text = f.name
+
+            resView.tag = collections[position]
 
             return resView
         }
