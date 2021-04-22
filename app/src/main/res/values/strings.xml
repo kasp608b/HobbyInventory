@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">HobbyInventory</string>
     <string name="Header">Collections</string>
+    <string name="CollectionName">Name</string>
+    <string name="add_item">Add Item</string>
+    
 </resources>

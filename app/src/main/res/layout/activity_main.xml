@@ -9,28 +9,46 @@
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Header"
-        android:textSize="30dp"
+        android:text="@string/CollectionName"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"/>
+
     <Button
         android:id="@+id/tvCreateButton"
-        android:onClick="onClickCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp">
+
+        android:onClick="onClickCreate"
+        android:text="@string/add_item"
+        android:layout_alignBottom="@id/tvFooter"
+        android:layout_marginLeft="15dp"
+        >
+
+    <Button
+        android:id="@+id/tvSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:onClick="onClickCreate"
+        android:text="@string/add_item"
+        android:layout_alignBottom="@id/tvFooter"
+        android:layout_marginLeft="15dp"
+        >
+
+
+
 
     </Button>
+
     <ListView
         android:id="@+id/collectionList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tvCreateButton"
-        android:layout_above="@id/tvFooter" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvHeader"
+        android:layout_above="@id/tvCreateButton"/>
+
     <TextView
         android:id="@+id/tvFooter"
         android:layout_width="wrap_content"
