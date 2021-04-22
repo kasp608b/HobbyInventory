@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HobbyInventory">
-        <activity android:name=".gui.CollectionActivity"></activity>
+        <activity android:name=".gui.CollectionDetailActivity"></activity>
         <activity android:name=".gui.ItemDetailActivity"></activity>
         <activity android:name=".gui.MainActivity">
             <intent-filter>
