@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">HobbyInventory</string>
     <string name="Header">Collections</string>
-    <string name="CollectionName">Name</string>
-    <string name="add_item">Add Item</string>
-    
+    <string name="add_image">add image</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="imgDes">image of item</string>
+    <string name="deleteItem">delete item</string>
+    <string name="description">description</string>
+    <string name="item_name">Item Name</string>
 </resources>
