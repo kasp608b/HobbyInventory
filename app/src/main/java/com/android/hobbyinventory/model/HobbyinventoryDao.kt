@@ -61,7 +61,7 @@ interface HobbyinventoryDao {
     //...............................................................................................................................
     @Transaction
     @Query("SELECT * FROM BECollection")
-    fun getCollectionsWithItems(): List<CollectionWithItems>
+    fun getCollectionsWithItems(): LiveData<List<CollectionWithItems>>
 
     @Transaction
     @Query("SELECT * FROM BECollection where id = (:id)")
