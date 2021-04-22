@@ -26,22 +26,6 @@
         android:layout_marginLeft="15dp"
         />
 
-    <Button
-        android:id="@+id/tvSaveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:onClick="onClickSave"
-        android:text="@string/save"
-        android:layout_alignBottom="@id/tvFooter"
-        android:layout_marginLeft="15dp"
-        >
-
-
-
-
-    </Button>
-
     <ListView
         android:id="@+id/collectionList"
         android:layout_width="match_parent"
