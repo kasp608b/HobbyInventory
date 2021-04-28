@@ -48,25 +48,22 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             {
                 sEdit2.isChecked = true
                 onCheckedChange(sEdit2.isChecked)
-                btnSaveCollection.visibility = View.VISIBLE
-                etHeader.visibility = View.VISIBLE
+
 
             }
 
             tvHeader.text = collection.name
-            tvHeader.visibility = View.GONE
+            onCheckedChange(sEdit2.isChecked)
 
             val mRep = HobbyinventoryRepository.get()
             val nameObserver = Observer<CollectionWithItems>{ CwI ->
+
+                var asArray : Array<BEItem> = emptyArray()
                 if(CwI != null) {
                     cache = CwI.items //error
-                    val asArray = CwI.items.toTypedArray()
+                    asArray = CwI.items.toTypedArray()
                 }
-                else
-                {
-                    //Do not do anything...
 
-                }
                 val adapter: ListAdapter = ItemAdapter(
                     this,
                     asArray
