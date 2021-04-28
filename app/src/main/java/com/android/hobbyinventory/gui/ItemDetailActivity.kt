@@ -307,8 +307,17 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
     fun onClickDelete(view: View) {
-        val rep = HobbyinventoryRepository.get()
-        rep.deleteItem(item)
-        finish()
+        if(newBool){
+            Toast.makeText(
+                    this,
+                    "nothing to delete",
+                    Toast.LENGTH_LONG
+            ).show()
+        } else {
+            val rep = HobbyinventoryRepository.get()
+            rep.deleteItem(item)
+            finish()
+        }
+
     }
 }
