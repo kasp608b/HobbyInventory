@@ -7,37 +7,32 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <Button
+        android:id="@+id/tvCreateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:onClick="onClickCreateItem"
+        android:text="@string/create_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/collectionList"
-
-    >
-
-        <Button
-            android:id="@+id/btnSaveCollection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/itemList"
+        tools:ignore="ButtonStyle">
 
 
-            android:text="@string/save"
-            tools:ignore="ButtonStyle" />
+    </Button>
 
-        <Button
-            android:id="@+id/tvCreateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_item"
-            android:onClick="onClickCreateItem"
-            tools:ignore="ButtonStyle">
+    <Button
+        android:id="@+id/btnSaveCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
 
-        </Button>
-    </LinearLayout>
+        android:onClick="onClickSave"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemList"
+        tools:ignore="ButtonStyle" />
 
     <TextView
         android:id="@+id/tvHeader"
@@ -45,13 +40,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:hint="@string/collection_name"
+        android:maxLength="23"
         android:text="@string/collection_name"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/collection_name"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etHeader"
@@ -60,7 +57,8 @@
         android:layout_centerHorizontal="true"
         android:inputType="text"
         android:text="@string/collection_name"
-        android:textSize="30sp"
+        android:textSize="20sp"
+        android:maxLength="23"
         android:hint="@string/collection_name"
 
         android:textStyle="bold"
@@ -70,7 +68,7 @@
         android:autofillHints="" />
 
     <ListView
-        android:id="@+id/collectionList"
+        android:id="@+id/itemList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
@@ -84,14 +82,7 @@
 
     </ListView>
 
-    <Button
-        android:id="@+id/btnBack2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="@string/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/sEdit2"
