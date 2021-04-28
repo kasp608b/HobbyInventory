@@ -1,13 +1,18 @@
 package com.android.hobbyinventory.gui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.ImageView
+import android.widget.Toast
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
 import com.android.hobbyinventory.model.BEItem
+import com.android.hobbyinventory.model.CollectionWithItems
+import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_collection_detail.*
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
@@ -55,6 +60,15 @@ class CollectionDetailActivity : AppCompatActivity() {
 
             tvHeader.visibility = View.VISIBLE
         }
+
+    }
+    fun onClickCreateItem(view: View) {
+        val intent = Intent(this, ItemDetailActivity::class.java)
+        val item = BEItem(0,collection.id,"","","")
+        intent.putExtra("item", item)
+        startActivity(intent)
+
+
 
     }
 
