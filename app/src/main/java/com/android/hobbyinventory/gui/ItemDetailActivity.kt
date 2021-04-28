@@ -311,7 +311,8 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
     fun onClickDelete(view: View) {
-        val alertDialog: AlertDialog? = this?.let {
+        
+         val alertDialog: AlertDialog? = this?.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
                 setPositiveButton(R.string.yes,
@@ -333,8 +334,17 @@ class ItemDetailActivity : AppCompatActivity() {
             // Create the AlertDialog
             builder.create()
         }
-
-        alertDialog?.show()
+        
+        if(newBool){
+            Toast.makeText(
+                    this,
+                    "nothing to delete",
+                    Toast.LENGTH_LONG
+            ).show()
+        } else 
+        {
+            alertDialog?.show()
+        }
 
     }
 
