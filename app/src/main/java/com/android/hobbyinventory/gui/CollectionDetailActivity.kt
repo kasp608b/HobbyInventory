@@ -1,13 +1,18 @@
 package com.android.hobbyinventory.gui
 
+import android.content.ClipData
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.*
+import androidx.lifecycle.Observer
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
 import com.android.hobbyinventory.model.BEItem
@@ -17,8 +22,10 @@ import kotlinx.android.synthetic.main.activity_collection_detail.*
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
 
-class CollectionDetailActivity : AppCompatActivity() {
+class CollectionDetailActivity : AppCompatActivity() { //error
     private lateinit var collection: BECollection
+    private var newBool = false
+    private var cache: List<BEItem>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
@@ -30,12 +37,13 @@ class CollectionDetailActivity : AppCompatActivity() {
         refresh()
     }
 
-    private fun refresh() {
+    private fun refresh()
+    {
         if(intent.extras != null) {
             val extras: Bundle = intent.extras!!
 
             collection = extras.getSerializable("collection") as BECollection
-            val newBool = extras.getSerializable("new") as Boolean
+            newBool = extras.getSerializable("new") as Boolean
             if(newBool)
             {
                 sEdit2.isChecked = true
@@ -47,7 +55,31 @@ class CollectionDetailActivity : AppCompatActivity() {
 
             tvHeader.text = collection.name
             tvHeader.visibility = View.GONE
+
+            val mRep = HobbyinventoryRepository.get()
+            val nameObserver = Observer<CollectionWithItems>{ CwI ->
+                if(CwI != null) {
+                    cache = CwI.items //error
+                    val asArray = CwI.items.toTypedArray()
+                }
+                else
+                {
+                    //Do not do anything...
+
+                }
+                val adapter: ListAdapter = ItemAdapter(
+                    this,
+                    asArray
+                )
+                itemList.adapter = adapter
+            }
+
+            mRep.getCollectionWithItemsById(collection.id).observe(this, nameObserver)
+
+            itemList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos,_  -> onListItemClick(view)}
+
         }
+
         else if (intent.extras == null)
         {
             sEdit2.isChecked = true
@@ -57,6 +89,21 @@ class CollectionDetailActivity : AppCompatActivity() {
         sEdit2.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(isChecked)
 
         }
+
+    }
+
+    private fun onListItemClick(view: View)
+    {
+
+        // Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
+        val item = view.tag as BEItem
+        Log.d("xyz",item.toString() )
+
+        val intent = Intent(this, ItemDetailActivity::class.java)
+        intent.putExtra("item", item)
+        intent.putExtra("new", false)
+        startActivity(intent)
+
     }
 
     private fun onCheckedChange( checked: Boolean) {
@@ -79,15 +126,69 @@ class CollectionDetailActivity : AppCompatActivity() {
 
     }
     fun onClickCreateItem(view: View) {
-        val intent = Intent(this, ItemDetailActivity::class.java)
-        val item = BEItem(0,collection.id,"","",null)
-        intent.putExtra("item", item)
-        intent.putExtra("new", true)
-        startActivity(intent)
+
+        if(newBool){
+            Toast.makeText(
+                this,
+                "Cannot create item,because collection dosen't exist",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            val intent = Intent(this, ItemDetailActivity::class.java)
+            val item = BEItem(0,collection.id,"","",null)
+            intent.putExtra("item", item)
+            intent.putExtra("new", true)
+            startActivity(intent)
+
+        }
+
+
 
 
 
     }
 
+    internal class ItemAdapter(context: Context,
+                               private val items: Array<BEItem>
+    ) : ArrayAdapter<BEItem>(context, 0, items)
+    {
+
+        override fun getView(position: Int, v: View?, parent: ViewGroup): View {
+            var v1: View? = v
+            if (v1 == null)
+            {
+                val mInflater = LayoutInflater.from(context)
+                v1 = mInflater.inflate(R.layout.item_list_cell, null)
+
+            }
+
+            val resView: View = v1!!
+
+            val itm = items[position]
+            val nameView = resView.findViewById<TextView>(R.id.tvNameExt)
+
+            val pictureView = resView.findViewById<ImageView>(R.id.FriendPicture)
+            nameView.text = itm.name
+
+            if(itm.pictureFile != null)
+            {
+                val File = File(itm.pictureFile!!)
+                showImageFromFile(pictureView, File)
+            }
+
+            resView.tag = itm
+
+
+            return resView
+        }
+
+        // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
+        private fun showImageFromFile(img: ImageView,  f: File) {
+            img.setImageURI(Uri.fromFile(f))
+            img.setBackgroundColor(Color.RED)
+            //mImage.setRotation(90);
+
+        }
+    }
 
 }

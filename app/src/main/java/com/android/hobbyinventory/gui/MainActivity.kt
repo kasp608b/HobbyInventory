@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onListItemClick(view: View) {
-       // Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
+
         val collection = view.tag as BECollection
         Log.d("xyz",collection.toString() )
 
