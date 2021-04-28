@@ -34,11 +34,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HobbyInventory">
-        <activity android:name=".gui.CollectionDetailActivity">
+        <activity android:name=".gui.CollectionDetailActivity" android:parentActivityName=".gui.MainActivity">
 
 
         </activity>
-        <activity android:name=".gui.ItemDetailActivity">
+        <activity android:name=".gui.ItemDetailActivity" android:parentActivityName=".gui.CollectionDetailActivity">
 
         </activity>
         <provider

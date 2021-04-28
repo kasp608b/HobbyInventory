@@ -105,6 +105,7 @@ class ItemDetailActivity : AppCompatActivity() {
             false
         })
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
