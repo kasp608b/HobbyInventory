@@ -22,8 +22,15 @@ class CollectionDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
+        refresh()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        refresh()
+    }
 
+    private fun refresh() {
         if(intent.extras != null) {
             val extras: Bundle = intent.extras!!
 

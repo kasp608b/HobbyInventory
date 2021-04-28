@@ -41,13 +41,13 @@ class MainActivity : AppCompatActivity() {
     private fun refresh() {
         //var listofCollections: List<BECollection> = listOf(BECollection(1, "Figures"), BECollection(2, "Manga"))
         val mRep = HobbyinventoryRepository.get()
-        /*
-        mRep.insertCollection(BECollection(0, "Figures"))
-        mRep.insertCollection(BECollection(0, "Manga"))
-        */
-       // mRep.insertItem(BEItem(0, 2,"Gyo","",null))
 
-       // mRep.insertItem(BEItem(0, 1,"smurf","",null))
+        //mRep.insertCollection(BECollection(0, "Figures"))
+        //mRep.insertCollection(BECollection(0, "Manga"))
+
+       //mRep.insertItem(BEItem(0, 2,"Gyo","",null))
+
+       //mRep.insertItem(BEItem(0, 1,"smurf","",null))
 
 
 

@@ -34,6 +34,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
+    android:onClick="onClickBack"
     android:text="@string/back"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
@@ -78,11 +79,11 @@
                 android:id="@+id/imgItem"
                 android:layout_width="359dp"
                 android:layout_height="397dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="100dp"
                 android:contentDescription="@string/imgDes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etDescription"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/ic_menu_report_image" />
 
             <Button
@@ -148,6 +149,7 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/orange"
         android:clickable="true"
+        android:onClick="onClickDelete"
         android:contentDescription="@string/deleteItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
