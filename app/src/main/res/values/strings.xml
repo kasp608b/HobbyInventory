@@ -8,6 +8,10 @@
     <string name="deleteItem">delete item</string>
     <string name="description">description</string>
     <string name="item_name">Item Name</string>
+    <string name="Create">Create collection</string>
+    <string name="create_item">Create item</string>
+    <string name="edit">edit</string>
+    <string name="collection_name">Collection Name</string>
     <string name="CollectionName">Collection</string>
     <string name="add_item">add item</string>
 </resources>

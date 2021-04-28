@@ -9,7 +9,7 @@
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/CollectionName"
+        android:text="@string/Header"
         android:textSize="30sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
@@ -21,26 +21,10 @@
         android:layout_height="wrap_content"
 
         android:onClick="onClickCreate"
-        android:text="@string/add_item"
+        android:text="@string/Create"
         android:layout_alignBottom="@id/tvFooter"
         android:layout_marginLeft="15dp"
         />
-
-    <Button
-        android:id="@+id/tvSaveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:onClick="onClickSave"
-        android:text="@string/save"
-        android:layout_alignBottom="@id/tvFooter"
-        android:layout_marginLeft="15dp"
-        >
-
-
-
-
-    </Button>
 
     <ListView
         android:id="@+id/collectionList"
