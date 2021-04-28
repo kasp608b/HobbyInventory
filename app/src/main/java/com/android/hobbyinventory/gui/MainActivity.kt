@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, CollectionDetailActivity::class.java)
         val collection = BECollection(0, "DefaultCollection")
         intent.putExtra("collection", collection)
+        intent.putExtra("new", true)
         startActivity(intent)
     }
 
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, CollectionDetailActivity::class.java)
         intent.putExtra("collection", collection)
+        intent.putExtra("new", false)
         startActivity(intent)
 
     /*

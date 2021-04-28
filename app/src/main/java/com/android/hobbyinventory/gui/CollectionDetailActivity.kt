@@ -23,10 +23,18 @@ class CollectionDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
 
-        if(!sEdit2.isChecked && intent.extras != null) {
+
+        if(intent.extras != null) {
             val extras: Bundle = intent.extras!!
 
-            collection = extras.getSerializable("item") as BECollection
+            collection = extras.getSerializable("collection") as BECollection
+            val newBool = extras.getSerializable("new") as Boolean
+            if(newBool)
+            {
+                sEdit2.isChecked = true
+                onCheckedChange(sEdit2.isChecked)
+
+            }
             tvHeader.text = collection.name
 
 
@@ -66,6 +74,7 @@ class CollectionDetailActivity : AppCompatActivity() {
         val intent = Intent(this, ItemDetailActivity::class.java)
         val item = BEItem(0,collection.id,"","","")
         intent.putExtra("item", item)
+        intent.putExtra("new", true)
         startActivity(intent)
 
 

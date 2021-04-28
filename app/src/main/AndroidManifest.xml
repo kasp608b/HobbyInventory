@@ -35,11 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HobbyInventory">
         <activity android:name=".gui.CollectionDetailActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".gui.ItemDetailActivity">
@@ -56,7 +52,11 @@
         </provider>
 
         <activity android:name=".gui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>
