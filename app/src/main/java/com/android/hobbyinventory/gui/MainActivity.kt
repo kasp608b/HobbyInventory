@@ -69,7 +69,12 @@ class MainActivity : AppCompatActivity() {
         collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
     }
 
-    fun onClickCreate(view: View) {}
+    fun onClickCreate(view: View) {
+        val intent = Intent(this, CollectionDetailActivity::class.java)
+        val collection = BECollection(0, "DefaultCollection")
+        intent.putExtra("collection", collection)
+        startActivity(intent)
+    }
 
     fun onListItemClick(view: View) {
         Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
@@ -87,9 +92,6 @@ class MainActivity : AppCompatActivity() {
 
         }
         mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
-
-
-
 
     }
 
@@ -126,5 +128,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onClickSave(view: View) {}
 }
