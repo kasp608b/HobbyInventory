@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             val resView: View = v1!!
-            resView.setBackgroundColor(colours[position % colours.size])
+            //resView.setBackgroundColor(colours[position % colours.size])
             val f = collections[position]
             val nameView = resView.findViewById<TextView>(R.id.tvNameExt)
             nameView.text = f.name

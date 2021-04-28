@@ -1,6 +1,9 @@
 package com.android.hobbyinventory.gui
 
 import android.Manifest
+import android.app.Dialog
+import android.app.DialogFragment
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -17,6 +20,7 @@ import android.view.View.OnTouchListener
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -307,17 +311,41 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
     fun onClickDelete(view: View) {
+        
+         val alertDialog: AlertDialog? = this?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.yes,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User clicked OK button
+                            val rep = HobbyinventoryRepository.get()
+                            rep.deleteItem(item)
+                            finish()
+                        })
+                setNegativeButton(R.string.no,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+
+                        })
+            }
+
+            builder.setMessage(R.string.dialog_confirm_delete)
+
+            // Create the AlertDialog
+            builder.create()
+        }
+        
         if(newBool){
             Toast.makeText(
                     this,
                     "nothing to delete",
                     Toast.LENGTH_LONG
             ).show()
-        } else {
-            val rep = HobbyinventoryRepository.get()
-            rep.deleteItem(item)
-            finish()
+        } else 
+        {
+            alertDialog?.show()
         }
 
     }
+
 }
