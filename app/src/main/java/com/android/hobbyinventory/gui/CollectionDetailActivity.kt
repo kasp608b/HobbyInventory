@@ -72,7 +72,7 @@ class CollectionDetailActivity : AppCompatActivity() {
     }
     fun onClickCreateItem(view: View) {
         val intent = Intent(this, ItemDetailActivity::class.java)
-        val item = BEItem(0,collection.id,"","","")
+        val item = BEItem(0,collection.id,"","",null)
         intent.putExtra("item", item)
         intent.putExtra("new", true)
         startActivity(intent)
