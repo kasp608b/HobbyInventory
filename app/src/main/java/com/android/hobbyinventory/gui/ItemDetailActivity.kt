@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BEItem
+import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -90,6 +91,7 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
+    // checks if activity is in edit mode or display mode
     private fun onCheckedChange(checked: Boolean) {
         if(checked)
         {
@@ -238,5 +240,42 @@ class ItemDetailActivity : AppCompatActivity() {
                     File.separator + prefix +
                     "_" + timeStamp + "." + postfix
         )
+    }
+
+    // deletes the item
+    private fun onClickDelete() {
+        val rep = HobbyinventoryRepository.get()
+        rep.deleteItem(item)
+        finish()
+    }
+
+    //Goes back to previous screen after closing the current window.
+    fun onClickBack(view: View) { finish() }
+
+    // saves item changes and sets the item text fields
+   fun onClickSave(view: View) {
+        val rep = HobbyinventoryRepository.get()
+
+        if(!(etItemName.text.isBlank() || etDescription.text.isBlank()))
+        {
+            item.name = etItemName.text.toString()
+            item.desc = etDescription.text.toString()
+            item.pictureFile = mFile?.absolutePath
+            rep.updateItem(item)
+
+            tvItemName.text = item.name
+            tvDescription.text = item.desc
+
+            sEdit.isChecked = false
+            onCheckedChange(sEdit.isChecked)
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    "Item cant have blank fields",
+                    Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }
