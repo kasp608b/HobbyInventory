@@ -166,7 +166,7 @@ class ItemDetailActivity : AppCompatActivity() {
     private fun showImageFromBitmap(img: ImageView, bmap: Bitmap) {
         img.setImageBitmap(bmap)
         //img.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-        //img.setBackgroundColor(Color.RED)
+        img.setBackgroundColor(Color.WHITE)
 
 
     }
