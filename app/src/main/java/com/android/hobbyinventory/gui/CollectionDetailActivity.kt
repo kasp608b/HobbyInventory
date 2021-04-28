@@ -148,6 +148,40 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
+    // saves item changes and sets the item text fields
+    fun onClickSave(view: View) {
+        val rep = HobbyinventoryRepository.get()
+
+        if(!etHeader.text.isBlank() && !newBool)
+        {
+            collection.name = etHeader.text.toString()
+            rep.updateCollection(collection)
+
+            tvHeader.text = collection.name
+
+
+            sEdit2.isChecked = false
+            onCheckedChange(sEdit2.isChecked)
+        }else if(!etHeader.text.isBlank() && newBool){
+            collection.name = etHeader.text.toString()
+            rep.insertCollection(collection)
+
+            tvHeader.text = collection.name
+
+
+            sEdit.isChecked = false
+            onCheckedChange(sEdit.isChecked)
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    "Collection cant have blank fields",
+                    Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
     internal class ItemAdapter(context: Context,
                                private val items: Array<BEItem>
     ) : ArrayAdapter<BEItem>(context, 0, items)
@@ -189,6 +223,8 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             //mImage.setRotation(90);
 
         }
+
+
     }
 
 }
