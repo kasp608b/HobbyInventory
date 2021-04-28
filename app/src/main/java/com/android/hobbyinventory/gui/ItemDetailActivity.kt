@@ -23,6 +23,7 @@ import androidx.core.content.FileProvider
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BEItem
 import com.android.hobbyinventory.model.HobbyinventoryRepository
+import kotlinx.android.synthetic.main.activity_collection_detail.*
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -36,9 +37,10 @@ class ItemDetailActivity : AppCompatActivity() {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP = 102
     val permissions = mutableListOf<String>()
     val TAG = "xyz"
-
+    var newBool: Boolean = false
     var mFile: File? = null
     private lateinit var item: BEItem
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,21 +51,32 @@ class ItemDetailActivity : AppCompatActivity() {
             val extras: Bundle = intent.extras!!
 
             item = extras.getSerializable("item") as BEItem
-            tvItemName.text = item.name
-            tvDescription.text = item.desc
+            newBool = extras.getSerializable("new") as Boolean
 
-            if(item.pictureFile != null)
+            if (newBool)
             {
-                val mImage = findViewById<ImageView>(R.id.imgItem)
-                val file = File(item.pictureFile!!)
-                mFile = file
-                showImageFromFile(mImage, file)
-            }
+                sEdit.isChecked = true
+                onCheckedChange(sEdit.isChecked)
+            }else {
+                sEdit.isChecked = false
+                onCheckedChange(sEdit.isChecked)
 
-            btnSave.visibility = View.GONE
-            etItemName.visibility = View.GONE
-            etDescription.visibility = View.GONE
-            btnImage.visibility = View.GONE
+                tvItemName.text = item.name
+                tvDescription.text = item.desc
+                if(item.pictureFile != null)
+                {
+                    val mImage = findViewById<ImageView>(R.id.imgItem)
+                    val file = File(item.pictureFile!!)
+                    mFile = file
+                    showImageFromFile(mImage, file)
+                }
+
+                btnSave.visibility = View.GONE
+                etItemName.visibility = View.GONE
+                etDescription.visibility = View.GONE
+                btnImage.visibility = View.GONE
+
+            }
 
         } else if (intent.extras == null)
         {
@@ -259,7 +272,7 @@ class ItemDetailActivity : AppCompatActivity() {
    fun onClickSave(view: View) {
         val rep = HobbyinventoryRepository.get()
 
-        if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && intent.extras != null)
+        if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && !newBool)
         {
             item.name = etItemName.text.toString()
             item.desc = etDescription.text.toString()
@@ -271,7 +284,7 @@ class ItemDetailActivity : AppCompatActivity() {
 
             sEdit.isChecked = false
             onCheckedChange(sEdit.isChecked)
-        }else if(intent.extras == null){
+        }else if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && newBool){
             item.name = etItemName.text.toString()
             item.desc = etDescription.text.toString()
             item.pictureFile = mFile?.absolutePath
@@ -291,5 +304,11 @@ class ItemDetailActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    fun onClickDelete(view: View) {
+        val rep = HobbyinventoryRepository.get()
+        rep.deleteItem(item)
+        finish()
     }
 }
