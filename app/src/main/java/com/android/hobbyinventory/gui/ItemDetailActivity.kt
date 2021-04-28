@@ -100,6 +100,9 @@ class ItemDetailActivity : AppCompatActivity() {
             etDescription.visibility = View.VISIBLE
             btnImage.visibility = View.VISIBLE
 
+            etItemName.text == tvItemName.text
+            etDescription.text == tvDescription.text
+
 
             tvDescription.visibility = View.GONE
             tvItemName.visibility = View.GONE
@@ -256,12 +259,23 @@ class ItemDetailActivity : AppCompatActivity() {
    fun onClickSave(view: View) {
         val rep = HobbyinventoryRepository.get()
 
-        if(!(etItemName.text.isBlank() || etDescription.text.isBlank()))
+        if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && intent.extras != null)
         {
             item.name = etItemName.text.toString()
             item.desc = etDescription.text.toString()
             item.pictureFile = mFile?.absolutePath
             rep.updateItem(item)
+
+            tvItemName.text = item.name
+            tvDescription.text = item.desc
+
+            sEdit.isChecked = false
+            onCheckedChange(sEdit.isChecked)
+        }else if(intent.extras == null){
+            item.name = etItemName.text.toString()
+            item.desc = etDescription.text.toString()
+            item.pictureFile = mFile?.absolutePath
+            rep.insertItem(item)
 
             tvItemName.text = item.name
             tvDescription.text = item.desc
