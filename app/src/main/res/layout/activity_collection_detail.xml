@@ -7,37 +7,31 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <Button
+        android:id="@+id/tvCreateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:onClick="onClickCreateItem"
+        android:text="@string/create_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/collectionList"
-
-    >
-
-        <Button
-            android:id="@+id/btnSaveCollection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+        tools:ignore="ButtonStyle">
 
 
-            android:text="@string/save"
-            tools:ignore="ButtonStyle" />
+    </Button>
 
-        <Button
-            android:id="@+id/tvCreateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_item"
-            android:onClick="onClickCreateItem"
-            tools:ignore="ButtonStyle">
+    <Button
+        android:id="@+id/btnSaveCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
 
-        </Button>
-    </LinearLayout>
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/collectionList"
+        tools:ignore="ButtonStyle" />
 
     <TextView
         android:id="@+id/tvHeader"

@@ -33,14 +33,13 @@ class CollectionDetailActivity : AppCompatActivity() {
             {
                 sEdit2.isChecked = true
                 onCheckedChange(sEdit2.isChecked)
+                btnSaveCollection.visibility = View.VISIBLE
+                etHeader.visibility = View.VISIBLE
 
             }
+
             tvHeader.text = collection.name
-
-
-            btnSaveCollection.visibility = View.GONE
-            etHeader.visibility = View.GONE
-
+            tvHeader.visibility = View.GONE
         }
         else if (intent.extras == null)
         {
@@ -57,6 +56,7 @@ class CollectionDetailActivity : AppCompatActivity() {
         if(checked)
         {
             btnSaveCollection.visibility = View.VISIBLE
+            tvCreateButton.visibility = View.GONE
             etHeader.visibility = View.VISIBLE
 
             tvHeader.visibility = View.GONE
@@ -64,6 +64,7 @@ class CollectionDetailActivity : AppCompatActivity() {
 
         } else {
             btnSaveCollection.visibility = View.GONE
+            tvCreateButton.visibility = View.VISIBLE
             etHeader.visibility = View.GONE
 
             tvHeader.visibility = View.VISIBLE
