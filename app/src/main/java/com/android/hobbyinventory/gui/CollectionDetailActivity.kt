@@ -30,12 +30,15 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
         refresh()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStart() {
         super.onStart()
         refresh()
     }
+
+
 
     private fun refresh()
     {
@@ -122,6 +125,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         }
 
     }
+
+    //Goes back to previous screen after closing the current window.
+    fun onClickBackCol(view: View) { finish() }
+
     fun onClickCreateItem(view: View) {
 
         if(newBool){
@@ -138,10 +145,6 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             startActivity(intent)
 
         }
-
-
-
-
 
     }
 
