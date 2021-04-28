@@ -77,12 +77,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onListItemClick(view: View) {
-        Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this, "Ye hath Clicked on a collection", Toast.LENGTH_SHORT).show()
         val collection = view.tag as BECollection
         Log.d("xyz",collection.toString() )
 
-        val mRep = HobbyinventoryRepository.get()
+        val intent = Intent(this, CollectionDetailActivity::class.java)
+        intent.putExtra("collection", collection)
+        startActivity(intent)
 
+    /*
         var items: List<BEItem>? = null
 
         val ItemsObserver = Observer<CollectionWithItems>{ c ->
@@ -92,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
-
+    */
     }
 
     override fun onStart() {
