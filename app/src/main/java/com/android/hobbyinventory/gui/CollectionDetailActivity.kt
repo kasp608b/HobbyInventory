@@ -1,7 +1,7 @@
 package com.android.hobbyinventory.gui
 
-import android.content.ClipData
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
@@ -20,7 +21,6 @@ import com.android.hobbyinventory.model.BEItem
 import com.android.hobbyinventory.model.CollectionWithItems
 import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_collection_detail.*
-import kotlinx.android.synthetic.main.activity_item_detail.*
 import java.io.File
 
 class CollectionDetailActivity : AppCompatActivity() { //error
@@ -55,14 +55,14 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             newBool = extras.getSerializable("new") as Boolean
             if(newBool)
             {
-                sEdit2.isChecked = true
-                onCheckedChange(sEdit2.isChecked)
+                sEditCollection.isChecked = true
+                onCheckedChange(sEditCollection.isChecked)
 
 
             }
 
             tvHeader.text = collection.name
-            onCheckedChange(sEdit2.isChecked)
+            onCheckedChange(sEditCollection.isChecked)
 
             val mRep = HobbyinventoryRepository.get()
             val nameObserver = Observer<CollectionWithItems>{ CwI ->
@@ -88,11 +88,11 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
         else if (intent.extras == null)
         {
-            sEdit2.isChecked = true
-            onCheckedChange(sEdit2.isChecked)
+            sEditCollection.isChecked = true
+            onCheckedChange(sEditCollection.isChecked)
         }
 
-        sEdit2.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(isChecked)
+        sEditCollection.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(isChecked)
 
         }
 
@@ -118,8 +118,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             btnSaveCollection.visibility = View.VISIBLE
             tvCreateButton.visibility = View.GONE
             etHeader.visibility = View.VISIBLE
+            etHeader.setText(collection.name)
 
             tvHeader.visibility = View.GONE
+
 
 
         } else {
@@ -166,17 +168,18 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             tvHeader.text = collection.name
 
 
-            sEdit2.isChecked = false
-            onCheckedChange(sEdit2.isChecked)
+            sEditCollection.isChecked = false
+            onCheckedChange(sEditCollection.isChecked)
         }else if(!etHeader.text.isBlank() && newBool){
+            newBool = false
             collection.name = etHeader.text.toString()
             rep.insertCollection(collection)
 
             tvHeader.text = collection.name
 
 
-            sEdit.isChecked = false
-            onCheckedChange(sEdit.isChecked)
+            sEditCollection.isChecked = false
+            onCheckedChange(sEditCollection.isChecked)
         }
         else
         {
@@ -186,6 +189,44 @@ class CollectionDetailActivity : AppCompatActivity() { //error
                     Toast.LENGTH_LONG
             ).show()
         }
+    }
+
+    fun onClickDelete(view: View) {
+
+        val alertDialog: AlertDialog? = this?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.yes,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User clicked OK button
+                            val rep = HobbyinventoryRepository.get()
+                            rep.deleteCollection(collection)
+                            finish()
+                        })
+                setNegativeButton(R.string.no,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+
+                        })
+            }
+
+            builder.setMessage(R.string.dialog_confirm_deleteCollection)
+
+            // Create the AlertDialog
+            builder.create()
+        }
+
+        if(newBool){
+            Toast.makeText(
+                    this,
+                    "nothing to delete",
+                    Toast.LENGTH_LONG
+            ).show()
+        } else
+        {
+            alertDialog?.show()
+        }
+
     }
 
     internal class ItemAdapter(context: Context,

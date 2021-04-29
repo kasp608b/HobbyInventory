@@ -85,7 +85,7 @@
 
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/sEdit2"
+        android:id="@+id/sEditCollection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/tvHeader"
@@ -110,7 +110,8 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        android:onClick="onClickDelete"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
