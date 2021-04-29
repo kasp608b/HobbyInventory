@@ -1,16 +1,19 @@
 package com.android.hobbyinventory.model
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import java.lang.IllegalStateException
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 class HobbyinventoryRepository private constructor(private val context: Context) {
 
     private val database: HobbyinventoryDatabase = Room.databaseBuilder(context.applicationContext,
-        HobbyinventoryDatabase::class.java,
-        "HobbyinventoryDatabase").build()
+            HobbyinventoryDatabase::class.java,
+            "HobbyinventoryDatabase").build()
 
     //Gets the given instance of HobbyinventoryDao
     private val HobbyinventoryDao = database.HobbyinventoryDao()
@@ -25,8 +28,25 @@ class HobbyinventoryRepository private constructor(private val context: Context)
     private val executor = Executors.newSingleThreadExecutor()
 
     //Inserts the given Collection object.
-    fun insertCollection(p: BECollection) {
-        executor.execute{ HobbyinventoryDao.insertCollection(p) }
+    fun insertCollection(p: BECollection) : Long {
+       // executor.execute{ Log.d("xyz", HobbyinventoryDao.insertCollection(p).toString()) }
+
+        val insertCallable = Callable<Long> { HobbyinventoryDao.insertCollection(p) }
+        var rowId: Long = 0
+
+        val future: Future<Long> = executor.submit(insertCallable)
+        try {
+            rowId = future.get()
+        } catch (e1: InterruptedException) {
+            e1.printStackTrace()
+        } catch (e: ExecutionException) {
+            e.printStackTrace()
+        }
+        return rowId
+
+
+
+
     }
 
     //Updates the given Collection object.

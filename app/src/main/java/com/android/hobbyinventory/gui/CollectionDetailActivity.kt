@@ -173,7 +173,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         }else if(!etHeader.text.isBlank() && newBool){
             newBool = false
             collection.name = etHeader.text.toString()
-            rep.insertCollection(collection)
+
+           var id = rep.insertCollection(collection).toString()
+
+            collection.id = id.toInt()
 
             tvHeader.text = collection.name
 

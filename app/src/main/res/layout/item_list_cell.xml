@@ -33,13 +33,5 @@
         android:text="NAME"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/imgFavoriteExt"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="10dp"
-        android:scaleType="fitCenter"
-        android:layout_gravity="center"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
 </LinearLayout>
 </LinearLayout>

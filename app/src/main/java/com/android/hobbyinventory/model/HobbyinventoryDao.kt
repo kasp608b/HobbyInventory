@@ -18,7 +18,7 @@ interface HobbyinventoryDao {
 
     //Inserts the given Collection object.
     @Insert
-    fun insertCollection(p: BECollection)
+    fun insertCollection(p: BECollection): Long
 
     //Updates the given Collection object.
     @Update
@@ -43,7 +43,7 @@ interface HobbyinventoryDao {
 
     //Inserts the given Collection object.
     @Insert
-    fun insertItem(p: BEItem)
+    fun  insertItem(p: BEItem)
 
     //Updates the given Collection object.
     @Update
