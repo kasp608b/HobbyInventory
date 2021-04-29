@@ -124,8 +124,8 @@ class ItemDetailActivity : AppCompatActivity() {
             etDescription.visibility = View.VISIBLE
             btnImage.visibility = View.VISIBLE
 
-            etItemName.text == tvItemName.text
-            etDescription.text == tvDescription.text
+            etItemName.setText(tvItemName.text)
+            etDescription.setText(tvDescription.text)
 
 
             tvDescription.visibility = View.GONE
