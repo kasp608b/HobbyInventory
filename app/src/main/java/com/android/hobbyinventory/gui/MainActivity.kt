@@ -39,31 +39,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refresh() {
-        //var listofCollections: List<BECollection> = listOf(BECollection(1, "Figures"), BECollection(2, "Manga"))
         val mRep = HobbyinventoryRepository.get()
-
-        //mRep.insertCollection(BECollection(0, "Figures"))
-        //mRep.insertCollection(BECollection(0, "Manga"))
-
-       //mRep.insertItem(BEItem(0, 2,"Gyo","",null))
-
-       //mRep.insertItem(BEItem(0, 1,"smurf","",null))
+        val tempCol: MutableList<BECollection> = mutableListOf()
+        val tempItemTotal: MutableList<Int> = mutableListOf()
 
 
-
-
-
-
-        val CollectionObserver = Observer<List<BECollection>>{ c ->
-            collections = c;
-            val asArray = c.toTypedArray()
+        val CollectionObserver = Observer<List<CollectionWithItems>>{ c ->
+            for (CwI in c)
+            {
+                tempCol.add(CwI.collection)
+                tempItemTotal.add(CwI.items.count())
+            }
+            val asArray = tempCol.toTypedArray()
+            val asArrayInts = tempItemTotal.toTypedArray()
             val adapter: ListAdapter = CollectionsAdapter(
                 this,
-                asArray
+                asArray,
+                asArrayInts
             )
             collectionList.adapter = adapter
         }
-        mRep.getAllCollection().observe(this, CollectionObserver)
+        mRep.getCollectionsWithItems().observe(this, CollectionObserver)
 
 
         collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
@@ -105,8 +101,10 @@ class MainActivity : AppCompatActivity() {
         refresh()
     }
 
+
     internal class CollectionsAdapter(context: Context,
-                                 private val collections: Array<BECollection>
+                                 private val collections: Array<BECollection>,
+                                 private val totalItem: Array<Int>,
     ) : ArrayAdapter<BECollection>(context, 0, collections)
     {
         private val colours = intArrayOf(
@@ -122,10 +120,14 @@ class MainActivity : AppCompatActivity() {
 
             }
             val resView: View = v1!!
-            //resView.setBackgroundColor(colours[position % colours.size])
             val f = collections[position]
+            val t = totalItem[position]
+
             val nameView = resView.findViewById<TextView>(R.id.tvNameExt)
+            val itemView = resView.findViewById<TextView>(R.id.tvItemTotal)
             nameView.text = f.name
+            itemView.text = "- $t"
+
 
             resView.tag = collections[position]
 

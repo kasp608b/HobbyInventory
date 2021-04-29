@@ -176,8 +176,6 @@ class ItemDetailActivity : AppCompatActivity() {
     // show the image [bmap] in the imageview [img] - and put meta data in [txt]
     private fun showImageFromBitmap(img: ImageView, bmap: Bitmap) {
         img.setImageBitmap(bmap)
-        //img.setLayoutParams(RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-        img.setBackgroundColor(Color.WHITE)
 
 
     }
@@ -214,7 +212,6 @@ class ItemDetailActivity : AppCompatActivity() {
     // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
     private fun showImageFromFile(img: ImageView, f: File) {
         img.setImageURI(Uri.fromFile(f))
-        img.setBackgroundColor(Color.RED)
         //mImage.setRotation(90);
 
     }
@@ -304,9 +301,11 @@ class ItemDetailActivity : AppCompatActivity() {
             globalItem.pictureFile = mFile?.absolutePath
             rep.insertItem(globalItem)
 
+
             tvItemName.text = globalItem.name
             tvDescription.text = globalItem.desc
 
+            newBool = false
             sEdit.isChecked = false
             onCheckedChange(sEdit.isChecked)
         }

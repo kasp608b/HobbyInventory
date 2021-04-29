@@ -9,36 +9,35 @@
         android:id="@+id/tvHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="@string/Header"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"/>
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/tvCreateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:onClick="onClickCreate"
-        android:text="@string/Create"
         android:layout_alignBottom="@id/tvFooter"
         android:layout_marginLeft="15dp"
-        />
+        android:backgroundTint="@color/Main_Light"
+        android:onClick="onClickCreate"
+        android:text="@string/Create" />
 
     <ListView
         android:id="@+id/collectionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvHeader"
-        android:layout_above="@id/tvCreateButton"/>
+        android:layout_above="@id/tvCreateButton"
+        android:layout_below="@id/tvHeader" />
 
     <TextView
         android:id="@+id/tvFooter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"/>
+        android:textStyle="bold" />
 
 </RelativeLayout>

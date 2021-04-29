@@ -84,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/add_image"
+                android:backgroundTint="@color/Main_Light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgItem" />
@@ -124,6 +125,7 @@
                 android:layout_marginTop="7dp"
                 android:onClick="onClickSave"
                 android:text="@string/save"
+                android:backgroundTint="@color/Main_Light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnImage"
                 app:layout_constraintTop_toBottomOf="@+id/imgItem" />
@@ -138,7 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/orange"
+        android:backgroundTint="@color/Secondary"
         android:clickable="true"
         android:onClick="onClickDelete"
         android:contentDescription="@string/deleteItem"

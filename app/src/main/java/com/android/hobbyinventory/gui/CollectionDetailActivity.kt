@@ -21,6 +21,7 @@ import com.android.hobbyinventory.model.BEItem
 import com.android.hobbyinventory.model.CollectionWithItems
 import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_collection_detail.*
+import kotlinx.android.synthetic.main.collection_list_cell.*
 import java.io.File
 
 class CollectionDetailActivity : AppCompatActivity() { //error
@@ -73,8 +74,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
                     var asArray : Array<BEItem> = emptyArray()
                     if(CwI != null)
                     {
-                        cache = CwI.items //error
+                        cache = CwI.items
                         asArray = CwI.items.toTypedArray()
+                        tvItemTotalCollectionList.text = CwI.items.size.toString()
+
                     }
 
                     val adapter: ListAdapter = ItemAdapter(
@@ -179,6 +182,7 @@ class CollectionDetailActivity : AppCompatActivity() { //error
                             tvHeader.text = collection.name
                             cache = CwI.items //error
                             asArray = CwI.items.toTypedArray()
+                            tvItemTotalCollectionList.text = CwI.items.size.toString()
                         }
 
                         val adapter: ListAdapter = ItemAdapter(
@@ -311,7 +315,6 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
         private fun showImageFromFile(img: ImageView,  f: File) {
             img.setImageURI(Uri.fromFile(f))
-            img.setBackgroundColor(Color.RED)
             //mImage.setRotation(90);
 
         }

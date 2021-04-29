@@ -18,5 +18,14 @@
         android:layout_gravity="center"
         android:text="NAME"
         android:textStyle="bold" />
-</LinearLayout>
+
+        <TextView
+            android:id="@+id/tvItemTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/Main_Light"
+            android:text="itemTotal" />
+
+    </LinearLayout>
 </LinearLayout>
