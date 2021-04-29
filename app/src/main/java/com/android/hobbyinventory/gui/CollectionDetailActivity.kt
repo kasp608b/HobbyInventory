@@ -25,7 +25,6 @@ import java.io.File
 
 class CollectionDetailActivity : AppCompatActivity() { //error
     val REQUEST_CODE_ANSWER = 10
-    val RESULT_OK = 1
     private lateinit var collection: BECollection
     private var newBool = false
     private var returnFromItemBool = false

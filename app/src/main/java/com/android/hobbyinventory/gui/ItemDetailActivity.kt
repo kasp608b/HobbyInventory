@@ -34,8 +34,6 @@ import java.util.*
 
 class ItemDetailActivity : AppCompatActivity() {
 
-    val REQUEST_CODE_ANSWER = 10
-    val RESULT_OK = 1
     private val PERMISSION_REQUEST_CODE = 1
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE = 101
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP = 102
@@ -190,15 +188,18 @@ class ItemDetailActivity : AppCompatActivity() {
         when (requestCode) {
 
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE ->
-                if (resultCode == RESULT_OK)
-                    showImageFromFile(imgItem, mFile!!)
+                if (resultCode == RESULT_OK){
+                    val mImage = findViewById<ImageView>(R.id.imgItem)
+                    showImageFromFile(mImage, mFile!!)
+                }
                 else handleOther(resultCode)
 
             CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP ->
                 if (resultCode == RESULT_OK) {
                     val extras = data!!.extras
                     val imageBitmap = extras!!["data"] as Bitmap
-                    showImageFromBitmap(imgItem, imageBitmap)
+                    val mImage = findViewById<ImageView>(R.id.imgItem)
+                    showImageFromBitmap(mImage, imageBitmap)
                 } else handleOther(resultCode)
         }
     }
