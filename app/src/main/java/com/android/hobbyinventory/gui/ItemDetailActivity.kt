@@ -1,8 +1,6 @@
 package com.android.hobbyinventory.gui
 
 import android.Manifest
-import android.app.Dialog
-import android.app.DialogFragment
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,7 +16,6 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -37,6 +34,8 @@ import java.util.*
 
 class ItemDetailActivity : AppCompatActivity() {
 
+    val REQUEST_CODE_ANSWER = 10
+    val RESULT_OK = 1
     private val PERMISSION_REQUEST_CODE = 1
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_FILE = 101
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE_BY_BITMAP = 102
@@ -44,7 +43,7 @@ class ItemDetailActivity : AppCompatActivity() {
     val TAG = "xyz"
     var newBool: Boolean = false
     var mFile: File? = null
-    private lateinit var item: BEItem
+    private lateinit var globalItem: BEItem
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +54,7 @@ class ItemDetailActivity : AppCompatActivity() {
         if(!sEdit.isChecked && intent.extras != null) {
             val extras: Bundle = intent.extras!!
 
-            item = extras.getSerializable("item") as BEItem
+            globalItem = extras.getSerializable("item") as BEItem
             newBool = extras.getSerializable("new") as Boolean
 
             if (newBool)
@@ -66,12 +65,12 @@ class ItemDetailActivity : AppCompatActivity() {
                 sEdit.isChecked = false
                 onCheckedChange(sEdit.isChecked)
 
-                tvItemName.text = item.name
-                tvDescription.text = item.desc
-                if(item.pictureFile != null)
+                tvItemName.text = globalItem.name
+                tvDescription.text = globalItem.desc
+                if(globalItem.pictureFile != null)
                 {
                     val mImage = findViewById<ImageView>(R.id.imgItem)
-                    val file = File(item.pictureFile!!)
+                    val file = File(globalItem.pictureFile!!)
                     mFile = file
                     showImageFromFile(mImage, file)
                 }
@@ -111,6 +110,9 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val intent = Intent()
+        intent.putExtra("collectionId", globalItem.collectionid)
+        setResult(RESULT_OK, intent)
         finish()
         return true
     }
@@ -272,7 +274,7 @@ class ItemDetailActivity : AppCompatActivity() {
     // deletes the item
     private fun onClickDelete() {
         val rep = HobbyinventoryRepository.get()
-        rep.deleteItem(item)
+        rep.deleteItem(globalItem)
         finish()
     }
 
@@ -285,24 +287,24 @@ class ItemDetailActivity : AppCompatActivity() {
 
         if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && !newBool)
         {
-            item.name = etItemName.text.toString()
-            item.desc = etDescription.text.toString()
-            item.pictureFile = mFile?.absolutePath
-            rep.updateItem(item)
+            globalItem.name = etItemName.text.toString()
+            globalItem.desc = etDescription.text.toString()
+            globalItem.pictureFile = mFile?.absolutePath
+            rep.updateItem(globalItem)
 
-            tvItemName.text = item.name
-            tvDescription.text = item.desc
+            tvItemName.text = globalItem.name
+            tvDescription.text = globalItem.desc
 
             sEdit.isChecked = false
             onCheckedChange(sEdit.isChecked)
         }else if(!(etItemName.text.isBlank() || etDescription.text.isBlank()) && newBool){
-            item.name = etItemName.text.toString()
-            item.desc = etDescription.text.toString()
-            item.pictureFile = mFile?.absolutePath
-            rep.insertItem(item)
+            globalItem.name = etItemName.text.toString()
+            globalItem.desc = etDescription.text.toString()
+            globalItem.pictureFile = mFile?.absolutePath
+            rep.insertItem(globalItem)
 
-            tvItemName.text = item.name
-            tvDescription.text = item.desc
+            tvItemName.text = globalItem.name
+            tvDescription.text = globalItem.desc
 
             sEdit.isChecked = false
             onCheckedChange(sEdit.isChecked)
@@ -326,7 +328,7 @@ class ItemDetailActivity : AppCompatActivity() {
                         DialogInterface.OnClickListener { dialog, id ->
                             // User clicked OK button
                             val rep = HobbyinventoryRepository.get()
-                            rep.deleteItem(item)
+                            rep.deleteItem(globalItem)
                             finish()
                         })
                 setNegativeButton(R.string.no,

@@ -24,8 +24,11 @@ import kotlinx.android.synthetic.main.activity_collection_detail.*
 import java.io.File
 
 class CollectionDetailActivity : AppCompatActivity() { //error
+    val REQUEST_CODE_ANSWER = 10
+    val RESULT_OK = 1
     private lateinit var collection: BECollection
     private var newBool = false
+    private var returnFromItemBool = false
     private var cache: List<BEItem>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,42 +51,44 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     private fun refresh()
     {
-        if(intent.extras != null) {
-            val extras: Bundle = intent.extras!!
-
-            collection = extras.getSerializable("collection") as BECollection
-            newBool = extras.getSerializable("new") as Boolean
-            if(newBool)
+        if(!returnFromItemBool)
+        {
+            if(intent.extras != null)
             {
-                sEditCollection.isChecked = true
-                onCheckedChange(sEditCollection.isChecked)
+                val extras: Bundle = intent.extras!!
 
-
-            }
-
-            tvHeader.text = collection.name
-            onCheckedChange(sEditCollection.isChecked)
-
-            val mRep = HobbyinventoryRepository.get()
-            val nameObserver = Observer<CollectionWithItems>{ CwI ->
-
-                var asArray : Array<BEItem> = emptyArray()
-                if(CwI != null) {
-                    cache = CwI.items //error
-                    asArray = CwI.items.toTypedArray()
+                collection = extras.getSerializable("collection") as BECollection
+                newBool = extras.getSerializable("new") as Boolean
+                if(newBool)
+                {
+                    sEditCollection.isChecked = true
+                    onCheckedChange(sEditCollection.isChecked)
                 }
 
-                val adapter: ListAdapter = ItemAdapter(
-                    this,
-                    asArray
-                )
-                itemList.adapter = adapter
+                tvHeader.text = collection.name
+                onCheckedChange(sEditCollection.isChecked)
+
+                val mRep = HobbyinventoryRepository.get()
+                val nameObserver = Observer<CollectionWithItems>{ CwI ->
+
+                    var asArray : Array<BEItem> = emptyArray()
+                    if(CwI != null)
+                    {
+                        cache = CwI.items //error
+                        asArray = CwI.items.toTypedArray()
+                    }
+
+                    val adapter: ListAdapter = ItemAdapter(
+                            this,
+                            asArray
+                    )
+                    itemList.adapter = adapter
+                }
+
+                mRep.getCollectionWithItemsById(collection.id).observe(this, nameObserver)
+
+                itemList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos,_  -> onListItemClick(view)}
             }
-
-            mRep.getCollectionWithItemsById(collection.id).observe(this, nameObserver)
-
-            itemList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos,_  -> onListItemClick(view)}
-
         }
 
         else if (intent.extras == null)
@@ -150,8 +155,46 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             val item = BEItem(0,collection.id,"","",null)
             intent.putExtra("item", item)
             intent.putExtra("new", true)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_ANSWER)
 
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ANSWER) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    val collectionId = data.extras?.get("collectionId") as Int
+                    onCheckedChange(sEditCollection.isChecked)
+                    newBool = false
+                    returnFromItemBool = true
+
+                    val mRep = HobbyinventoryRepository.get()
+                    val nameObserver = Observer<CollectionWithItems>{ CwI ->
+
+                        var asArray : Array<BEItem> = emptyArray()
+                        if(CwI != null) {
+                            collection =  CwI.collection
+                            tvHeader.text = collection.name
+                            cache = CwI.items //error
+                            asArray = CwI.items.toTypedArray()
+                        }
+
+                        val adapter: ListAdapter = ItemAdapter(
+                                this,
+                                asArray
+                        )
+                        itemList.adapter = adapter
+                    }
+
+                    mRep.getCollectionWithItemsById(collectionId).observe(this, nameObserver)
+
+                    itemList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos,_  -> onListItemClick(view)}
+
+                }
+            }
         }
 
     }
