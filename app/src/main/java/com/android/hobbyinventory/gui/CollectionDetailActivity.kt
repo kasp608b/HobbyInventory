@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Observer
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
@@ -379,10 +380,13 @@ class CollectionDetailActivity : AppCompatActivity() { //error
             val pictureView = resView.findViewById<ImageView>(R.id.FriendPicture)
             nameView.text = itm.name
 
+
             if(itm.pictureFile != null)
             {
                 val File = File(itm.pictureFile!!)
                 showImageFromFile(pictureView, File)
+            } else {
+                pictureView.setImageResource(android.R.drawable.ic_menu_report_image)
             }
 
             resView.tag = itm
