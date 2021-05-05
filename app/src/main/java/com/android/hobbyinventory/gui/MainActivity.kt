@@ -3,7 +3,6 @@ package com.android.hobbyinventory.gui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,11 +13,9 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import com.android.hobbyinventory.R
 import com.android.hobbyinventory.model.BECollection
-import com.android.hobbyinventory.model.BEItem
 import com.android.hobbyinventory.model.CollectionWithItems
 import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +23,10 @@ class MainActivity : AppCompatActivity() {
      * List of collections
      */
     var collections: List<BECollection>? = null
+    val TAG = "xyz"
+    val tempCol: MutableList<BECollection> = mutableListOf()
+    val tempItemTotal: MutableList<Int> = mutableListOf()
+    var varSavedInstanceState: Bundle? = null
 
     /**
      * sets up the activity on start up and initializes the database
@@ -34,35 +35,55 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         HobbyinventoryRepository.initialize(this)
-
-        refresh()
+        this.varSavedInstanceState = savedInstanceState
+        refresh(this.varSavedInstanceState)
     }
 
-    private fun refresh() {
-        val mRep = HobbyinventoryRepository.get()
-        val tempCol: MutableList<BECollection> = mutableListOf()
-        val tempItemTotal: MutableList<Int> = mutableListOf()
 
-
-        val CollectionObserver = Observer<List<CollectionWithItems>>{ c ->
-            for (CwI in c)
-            {
-                tempCol.add(CwI.collection)
-                tempItemTotal.add(CwI.items.count())
-            }
-            val asArray = tempCol.toTypedArray()
-            val asArrayInts = tempItemTotal.toTypedArray()
+    private fun refresh(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null)
+        {
+            val asArray = savedInstanceState.getSerializable("collections") as Array<BECollection>
+            val asArrayInts = savedInstanceState.getSerializable("itemTotals") as Array<Int>
             val adapter: ListAdapter = CollectionsAdapter(
-                this,
-                asArray,
-                asArrayInts
+                    this,
+                    asArray,
+                    asArrayInts
             )
             collectionList.adapter = adapter
+
+            collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
+        } else {
+            val mRep = HobbyinventoryRepository.get()
+            val CollectionObserver = Observer<List<CollectionWithItems>>{ c ->
+                this.tempCol.clear()
+                this.tempItemTotal.clear()
+                for (CwI in c)
+                {
+                    this.tempCol.add(CwI.collection)
+                    this.tempItemTotal.add(CwI.items.count())
+                }
+                val asArray = this.tempCol.toTypedArray()
+                val asArrayInts = this.tempItemTotal.toTypedArray()
+                val adapter: ListAdapter = CollectionsAdapter(
+                        this,
+                        asArray,
+                        asArrayInts
+                )
+                collectionList.adapter = adapter
+            }
+            mRep.getCollectionsWithItems().observe(this, CollectionObserver)
+
+
+            collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
         }
-        mRep.getCollectionsWithItems().observe(this, CollectionObserver)
+    }
 
-
-        collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "list is saved")
+        outState.putSerializable("collections", this.tempCol.toTypedArray())
+        outState.putSerializable("itemTotals", this.tempItemTotal.toTypedArray())
     }
 
     fun onClickCreate(view: View) {
@@ -76,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     fun onListItemClick(view: View) {
 
         val collection = view.tag as BECollection
-        Log.d("xyz",collection.toString() )
+        Log.d(TAG,collection.toString() )
 
         val intent = Intent(this, CollectionDetailActivity::class.java)
         intent.putExtra("collection", collection)
@@ -98,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        refresh()
+        refresh(null)
     }
 
 
