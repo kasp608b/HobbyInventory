@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.android.hobbyinventory.R
+import com.android.hobbyinventory.model.BECollection
 import com.android.hobbyinventory.model.BEItem
 import com.android.hobbyinventory.model.HobbyinventoryRepository
 import kotlinx.android.synthetic.main.activity_collection_detail.*
@@ -52,42 +53,89 @@ class ItemDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_item_detail)
         checkPermissions()
 
-        if(!sEdit.isChecked && intent.extras != null) {
-            val extras: Bundle = intent.extras!!
 
-            globalItem = extras.getSerializable("item") as BEItem
-            newBool = extras.getSerializable("new") as Boolean
+    if(savedInstanceState != null) {
+        /*
+           val cacheArray = savedInstanceState.getSerializable("cache") as Array<BEItem>
+           cache = cacheArray.asList()
+           this.collection = savedInstanceState.getSerializable("collection") as BECollection
+           this.returnFromItemBool = savedInstanceState.getSerializable("returnFromItemBool") as Boolean
+           this.newBool = savedInstanceState.getSerializable("newBool") as Boolean
+           var ischecked = savedInstanceState.getSerializable("editIsChecked") as Boolean
 
-            if (newBool)
-            {
-                sEdit.isChecked = true
-                onCheckedChange(sEdit.isChecked)
-            }else {
-                sEdit.isChecked = false
-                onCheckedChange(sEdit.isChecked)
+           outState.putSerializable("item", this.globalItem)
+       outState.putSerializable("mFile", this.mFile)
+       outState.putSerializable("newBool", this.newBool)
+       outState.putSerializable("editIsChecked", sEdit.isChecked)
+           */
+        this.globalItem = savedInstanceState.getSerializable("item") as BEItem
+        this.newBool = savedInstanceState.getSerializable("newBool") as Boolean
+        var ischecked = savedInstanceState.getSerializable("editIsChecked") as Boolean
 
-                tvItemName.text = globalItem.name
-                tvDescription.text = globalItem.desc
-                if(globalItem.pictureFile != null)
-                {
-                    val mImage = findViewById<ImageView>(R.id.imgItem)
-                    val file = File(globalItem.pictureFile!!)
-                    mFile = file
-                    showImageFromFile(mImage, file)
+        var ismFileNull = savedInstanceState.getSerializable("ismFileNull") as Boolean
+
+        if (!ismFileNull) {
+            this.mFile = savedInstanceState.getSerializable("mFile") as File
+        }
+
+        sEdit.isChecked = ischecked
+        onCheckedChange(sEdit.isChecked)
+
+        tvItemName.text = globalItem.name
+        tvDescription.text = globalItem.desc
+        if(mFile != null){
+            val mImage = findViewById<ImageView>(R.id.imgItem)
+            showImageFromFile(mImage, mFile!!)
+
+        }
+        else if (globalItem.pictureFile != null) {
+            val mImage = findViewById<ImageView>(R.id.imgItem)
+            val file = File(globalItem.pictureFile!!)
+            mFile = file
+            showImageFromFile(mImage, file)
+        }
+
+        }
+        else
+        {
+
+            if (!sEdit.isChecked && intent.extras != null) {
+                val extras: Bundle = intent.extras!!
+
+                globalItem = extras.getSerializable("item") as BEItem
+                newBool = extras.getSerializable("new") as Boolean
+
+                if (newBool) {
+                    sEdit.isChecked = true
+                    onCheckedChange(sEdit.isChecked)
+                } else {
+                    sEdit.isChecked = false
+                    onCheckedChange(sEdit.isChecked)
+
+                    tvItemName.text = globalItem.name
+                    tvDescription.text = globalItem.desc
+                    if (globalItem.pictureFile != null) {
+                        val mImage = findViewById<ImageView>(R.id.imgItem)
+                        val file = File(globalItem.pictureFile!!)
+                        mFile = file
+                        showImageFromFile(mImage, file)
+                    }
+
+                    btnSave.visibility = View.GONE
+                    etItemName.visibility = View.GONE
+                    etDescription.visibility = View.GONE
+                    btnImage.visibility = View.GONE
+
                 }
 
-                btnSave.visibility = View.GONE
-                etItemName.visibility = View.GONE
-                etDescription.visibility = View.GONE
-                btnImage.visibility = View.GONE
-
+            } else if (intent.extras == null) {
+                sEdit.isChecked = true
+                onCheckedChange(sEdit.isChecked)
             }
-
-        } else if (intent.extras == null)
-        {
-            sEdit.isChecked = true
-            onCheckedChange(sEdit.isChecked)
         }
+
+
+
 
         sEdit.setOnCheckedChangeListener{ view, isChecked -> onCheckedChange(isChecked)
 
@@ -107,6 +155,22 @@ class ItemDetailActivity : AppCompatActivity() {
         })
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "Collection_Detail is saved")
+        outState.putSerializable("item", this.globalItem)
+        if(this.mFile == null)
+        {
+            outState.putSerializable("ismFileNull", true)
+        }
+        else{
+            outState.putSerializable("ismFileNull", false)
+            }
+        outState.putSerializable("mFile", this.mFile)
+        outState.putSerializable("newBool", this.newBool)
+        outState.putSerializable("editIsChecked", sEdit.isChecked)
 
     }
 

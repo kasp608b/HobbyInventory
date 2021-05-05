@@ -172,7 +172,14 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         val intent = Intent(this, ItemDetailActivity::class.java)
         intent.putExtra("item", item)
         intent.putExtra("new", false)
-        startActivity(intent)
+        startActivityForResult(intent,REQUEST_CODE_ANSWER)
+
+        /*
+        val intent = Intent(this, ItemDetailActivity::class.java)
+            val item = BEItem(0,collection.id,"","",null)
+            intent.putExtra("item", item)
+            intent.putExtra("new", true)
+            startActivityForResult(intent, REQUEST_CODE_ANSWER)*/
 
     }
 
