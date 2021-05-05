@@ -93,17 +93,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("new", false)
         startActivity(intent)
 
-    /*
-        var items: List<BEItem>? = null
-
-        val ItemsObserver = Observer<CollectionWithItems>{ c ->
-            items = c.items
-
-            Log.d("xyz",items.toString() )
-
-        }
-        mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
-    */
     }
 
     /**

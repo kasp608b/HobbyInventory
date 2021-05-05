@@ -44,7 +44,9 @@ class ItemDetailActivity : AppCompatActivity() {
     private lateinit var globalItem: BEItem
 
 
-    //handles the set up of the activity when entered from collection detail activity
+    /**
+     * handles the set up of the activity when entered from collection detail activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_detail)
@@ -108,7 +110,9 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
-    //returns the user to the previous activity with an intent of which collection should be displayed
+    /**
+     * returns the user to the previous activity with an intent of which collection should be displayed
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val intent = Intent()
         intent.putExtra("collectionId", globalItem.collectionid)
@@ -117,7 +121,9 @@ class ItemDetailActivity : AppCompatActivity() {
         return true
     }
 
-    // checks if activity is in edit mode or display mode
+    /**
+     * changes the view between edit and display mode
+     */
     private fun onCheckedChange(checked: Boolean) {
         if(checked)
         {
@@ -146,7 +152,9 @@ class ItemDetailActivity : AppCompatActivity() {
     }
 
 
-    //Checks if permission is granted to use the various required parts.
+    /**
+     * Checks if permission is granted to use the various required parts.
+     */
     private fun isPermissionGiven(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return permissions.all { p -> checkSelfPermission(p) == PackageManager.PERMISSION_GRANTED}
@@ -154,7 +162,9 @@ class ItemDetailActivity : AppCompatActivity() {
         return true
     }
 
-    //Checks all permissions.
+    /**
+     * Checks all permissions.
+     */
     private fun checkPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
 
@@ -171,7 +181,9 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
-    //Checks if the permissions are granted.
+    /**
+     * Checks if the permissions are granted.
+     */
     private fun isGranted(permission: String): Boolean =
         ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
@@ -182,7 +194,9 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
-    //Grabs the new image and inputs it into the app.
+    /**
+     * Grabs the new image and inputs it into the app.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -204,21 +218,27 @@ class ItemDetailActivity : AppCompatActivity() {
         }
     }
 
-    //Handles cancelling the camera or if the image is not taken.
+    /**
+     * Handles cancelling the camera or if the image is not taken.
+     */
     private fun handleOther(resultCode: Int) {
         if (resultCode == RESULT_CANCELED)
             Toast.makeText(this, "Canceled...", Toast.LENGTH_LONG).show()
         else Toast.makeText(this, "Picture NOT taken - unknown error...", Toast.LENGTH_LONG).show()
     }
 
-    // show the image allocated in [f] in imageview [img]. Show meta data in [txt]
+    /**
+     * show the image allocated in [f] in imageview [img]. Show meta data in [txt]
+     */
     private fun showImageFromFile(img: ImageView, f: File) {
         img.setImageURI(Uri.fromFile(f))
         //mImage.setRotation(90);
 
     }
 
-    //Creates a file to save an image, checks whether or not it can.
+    /**
+     * Creates a file to save an image, checks whether or not it can.
+     */
     fun onTakeByFile(view: View) {
         mFile = getOutputMediaFile("Camera01") // create a file to save the image
 
@@ -228,7 +248,9 @@ class ItemDetailActivity : AppCompatActivity() {
         }
 
 
-        // create Intent to take a picture
+        /**
+         *  create Intent to take a picture
+         */
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         val applicationId = "com.android.hobbyinventory"
@@ -246,9 +268,11 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
-    // return a new file with a timestamp name in a folder named [folder] in
-    // the external directory for pictures.
-    // Return null if the file cannot be created
+    /**
+     * return a new file with a timestamp name in a folder named [folder] in
+     * the external directory for pictures.
+     * Return null if the file cannot be created
+     */
     private fun getOutputMediaFile(folder: String): File? {
         // in an emulated device you can see the external files in /sdcard/Android/data/<your app>.
         val mediaStorageDir = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), folder)
@@ -260,7 +284,9 @@ class ItemDetailActivity : AppCompatActivity() {
             }
         }
 
-        // Create a media file name
+        /**
+         * Create a media file name
+         */
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val postfix = "jpg"
         val prefix = "IMG"
@@ -271,17 +297,10 @@ class ItemDetailActivity : AppCompatActivity() {
         )
     }
 
-    // deletes the item
-    private fun onClickDelete() {
-        val rep = HobbyinventoryRepository.get()
-        rep.deleteItem(globalItem)
-        finish()
-    }
 
-    //Goes back to previous screen after closing the current window.
-    fun onClickBack(view: View) { finish() }
-
-    // saves item changes and sets the item text fields
+    /**
+     *  saves item changes and sets the item text fields
+     */
    fun onClickSave(view: View) {
         val rep = HobbyinventoryRepository.get()
 
@@ -321,7 +340,9 @@ class ItemDetailActivity : AppCompatActivity() {
         }
     }
 
-    // deletes the item and returns the user to collection detail activity
+    /**
+     * deletes the item and returns the user to collection detail activity
+     */
     fun onClickDelete(view: View) {
         
          val alertDialog: AlertDialog? = this?.let {

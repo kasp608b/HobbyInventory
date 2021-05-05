@@ -30,6 +30,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
     private var newBool = false
     private var returnFromItemBool = false
     private var cache: List<BEItem>? = null
+
+    /**
+     * sets up the activity on start up and initializes the database
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
@@ -37,11 +41,17 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    /**
+     * when the app starts, call refresh function
+     */
     override fun onStart() {
         super.onStart()
         refresh()
     }
 
+    /**
+     * returns the user to the previous activity with an intent of which collection should be displayed
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         finish()
         return true
@@ -49,6 +59,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
 
 
+    /**
+     * Refresh function grabs data from the database, also reimplements variables when changing view
+     */
     private fun refresh()
     {
         if(!returnFromItemBool)
@@ -105,6 +118,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
+    /**
+     * starts the item detail activity
+     * sets the intent to the clicked item and a boolean to explain that the user clicked an existing item
+     */
     private fun onListItemClick(view: View)
     {
 
@@ -119,6 +136,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
+    /**
+     * changes the view between edit 0and display mode
+     */
     private fun onCheckedChange( checked: Boolean) {
         if(checked)
         {
@@ -141,9 +161,10 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
-    //Goes back to previous screen after closing the current window.
-    fun onClickBackCol(view: View) { finish() }
 
+    /** starts the item detail activity
+     * sets the intent to a new item and a boolean to explain that the user creates a new item
+     */
     fun onClickCreateItem(view: View) {
 
         if(newBool){
@@ -163,6 +184,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
+    /**
+     * sets up the list of items on a collection
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_ANSWER) {
@@ -202,7 +226,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
-    // saves item changes and sets the item text fields
+    /**
+     * saves collection changes and sets the collection text fields
+     */
     fun onClickSave(view: View) {
         val rep = HobbyinventoryRepository.get()
 
@@ -240,6 +266,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
         }
     }
 
+    /**
+     * deletes the collection and sends the user back to the main activity
+     */
     fun onClickDelete(view: View) {
 
         val alertDialog: AlertDialog? = this?.let {
@@ -278,6 +307,9 @@ class CollectionDetailActivity : AppCompatActivity() { //error
 
     }
 
+    /**
+     * defines how the collection list is displayed
+     */
     internal class ItemAdapter(context: Context,
                                private val items: Array<BEItem>
     ) : ArrayAdapter<BEItem>(context, 0, items)
