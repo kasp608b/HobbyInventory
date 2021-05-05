@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
         refresh()
     }
 
+
+    /**
+     * Refresh function grabs data from the database, also reimplements variables when changing view
+     */
     private fun refresh() {
         val mRep = HobbyinventoryRepository.get()
         val tempCol: MutableList<BECollection> = mutableListOf()
@@ -65,6 +69,9 @@ class MainActivity : AppCompatActivity() {
         collectionList.onItemClickListener = AdapterView.OnItemClickListener { _, view, pos, _ -> onListItemClick(view)}
     }
 
+    /**
+     * When the create button is pressed, forwards data to Collection Detail Activity and tells it the user is creating a new collection
+     */
     fun onClickCreate(view: View) {
         val intent = Intent(this, CollectionDetailActivity::class.java)
         val collection = BECollection(0, "DefaultCollection")
@@ -73,6 +80,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * when a collection item is pressed, forward name of collection and gets the matching data of the collection
+     */
     fun onListItemClick(view: View) {
 
         val collection = view.tag as BECollection
@@ -96,12 +106,18 @@ class MainActivity : AppCompatActivity() {
     */
     }
 
+    /**
+     * when the app starts, call refresh function
+     */
     override fun onStart() {
         super.onStart()
         refresh()
     }
 
 
+    /**
+     * internal class collection adapter defines the look of the list
+     */
     internal class CollectionsAdapter(context: Context,
                                  private val collections: Array<BECollection>,
                                  private val totalItem: Array<Int>,
