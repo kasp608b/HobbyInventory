@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
         refresh(this.varSavedInstanceState)
     }
 
-
+    /**
+     * Refresh function grabs data from the database, also reimplements variables when changing view
+     */
     private fun refresh(savedInstanceState: Bundle?) {
         if (savedInstanceState != null)
         {
@@ -86,6 +88,9 @@ class MainActivity : AppCompatActivity() {
         outState.putSerializable("itemTotals", this.tempItemTotal.toTypedArray())
     }
 
+    /**
+     * When the create button is pressed, forwards data to Collection Detail Activity and tells it the user is creating a new collection
+     */
     fun onClickCreate(view: View) {
         val intent = Intent(this, CollectionDetailActivity::class.java)
         val collection = BECollection(0, "DefaultCollection")
@@ -94,6 +99,9 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * when a collection item is pressed, forward name of collection and gets the matching data of the collection
+     */
     fun onListItemClick(view: View) {
 
         val collection = view.tag as BECollection
@@ -104,25 +112,20 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("new", false)
         startActivity(intent)
 
-    /*
-        var items: List<BEItem>? = null
-
-        val ItemsObserver = Observer<CollectionWithItems>{ c ->
-            items = c.items
-
-            Log.d("xyz",items.toString() )
-
-        }
-        mRep.getCollectionWithItemsById(collection.id).observe(this, ItemsObserver)
-    */
     }
 
+    /**
+     * when the app starts, call refresh function
+     */
     override fun onStart() {
         super.onStart()
         refresh(null)
     }
 
 
+    /**
+     * internal class collection adapter defines the look of the list
+     */
     internal class CollectionsAdapter(context: Context,
                                  private val collections: Array<BECollection>,
                                  private val totalItem: Array<Int>,
