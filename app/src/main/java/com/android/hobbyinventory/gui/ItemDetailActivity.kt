@@ -44,6 +44,7 @@ class ItemDetailActivity : AppCompatActivity() {
     private lateinit var globalItem: BEItem
 
 
+    //handles the set up of the activity when entered from collection detail activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_detail)
@@ -107,6 +108,7 @@ class ItemDetailActivity : AppCompatActivity() {
 
     }
 
+    //returns the user to the previous activity with an intent of which collection should be displayed
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val intent = Intent()
         intent.putExtra("collectionId", globalItem.collectionid)
@@ -319,6 +321,7 @@ class ItemDetailActivity : AppCompatActivity() {
         }
     }
 
+    // deletes the item and returns the user to collection detail activity
     fun onClickDelete(view: View) {
         
          val alertDialog: AlertDialog? = this?.let {
